@@ -775,8 +775,6 @@ textarea {
 .dot.low    { background: var(--orange); }
 .dot.empty  { background: var(--red); }
 
-/* 지도 위 핀: 모양 = 종류, 색 = 재고 상태, 숫자 = 대여기 대수 */
-
 .pin {
   width: 32px;
   height: 32px;
@@ -819,8 +817,6 @@ textarea {
 .pin-sample.normal { background: var(--green); }
 .pin-sample.low    { background: var(--orange); }
 .pin-sample.empty  { background: var(--red); }
-
-/* 핀을 눌렀을 때 뜨는 정보창 */
 
 .map-popup {
   position: relative;
@@ -908,8 +904,6 @@ textarea {
   font-size: 13px;
   line-height: 1.9;
 }
-
-/* 지도 오른쪽 목록 */
 
 .map-side {
   display: flex;
@@ -1417,7 +1411,6 @@ footer strong {
     overflow-x: auto;
   }
 
-  /* 두 개의 메뉴 묶음을 한 줄 스크롤로 */
   .sidebar {
     overflow-x: auto;
   }
@@ -1540,8 +1533,7 @@ footer strong {
 
 
 /* =====================================================
-   랜딩(홍보) 페이지 — 사이트를 열면 처음 보이는 화면
-   모든 규칙이 .landing 안에서만 적용되도록 범위를 한정함
+   랜딩(홍보) 페이지
    ===================================================== */
 
 [hidden] {
@@ -1569,8 +1561,7 @@ footer strong {
   font-weight: 700;
 }
 
-/* ===== DRYLER 랜딩 페이지 ===== */
- .landing{
+.landing{
   --navy:#0D2454;
   --navy-hover:#1B3F86;
   --ink-2:#3A4D6E;
@@ -1587,7 +1578,6 @@ footer strong {
 .landing a:hover{color:var(--navy-hover)}
 .landing a:focus-visible{outline:3px solid var(--accent);outline-offset:3px;border-radius:6px}
 
-/* ----- 히어로 ----- */
 .dr-hero{position:relative;height:300vh;background:rgb(24,32,47)}
 .dr-stage{position:sticky;top:0;height:100vh;overflow:hidden;background:rgb(24,32,47)}
 .dr-sun{position:absolute;right:-10%;top:-30%;width:900px;height:900px;border-radius:50%;background:radial-gradient(circle,rgba(255,226,160,.85) 0%,rgba(255,236,190,.35) 35%,rgba(255,255,255,0) 70%);opacity:0}
@@ -1633,7 +1623,6 @@ footer strong {
 .dr-hint svg{animation:dr-bob 1.6s ease-in-out infinite}
 @keyframes dr-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(8px)}}
 
-/* ----- 공통 섹션 ----- */
 .dr-sec{padding:140px 48px}
 .dr-wrap{max-width:1160px;margin:0 auto;display:flex;flex-direction:column;gap:56px}
 .dr-head{display:flex;flex-direction:column;gap:14px;max-width:700px}
@@ -1641,7 +1630,6 @@ footer strong {
 .dr-title{margin:0;font-size:42px;line-height:1.3;font-weight:900}
 .dr-lead{margin:0;font-size:18px;line-height:1.7;color:var(--ink-3)}
 
-/* 서비스 */
 .dr-services{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}
 .dr-service{background:#fff;border-radius:24px;padding:40px;display:flex;flex-direction:column;gap:18px;box-shadow:0 2px 0 rgba(13,36,84,.04),0 20px 40px rgba(13,36,84,.06)}
 .dr-icon{width:56px;height:56px;border-radius:16px;display:flex;align-items:center;justify-content:center}
@@ -1649,14 +1637,12 @@ footer strong {
 .dr-service p{margin:0;font-size:17px;line-height:1.7;color:var(--ink-3)}
 .dr-price{margin-top:auto;font-size:15px;font-weight:700}
 
-/* 이용 방법 */
 .dr-steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
 .dr-step{display:flex;flex-direction:column;gap:16px;padding:36px;border-radius:24px;background:var(--ground)}
 .dr-num{width:48px;height:48px;border-radius:50%;background:var(--accent);font-weight:900;font-size:20px;display:flex;align-items:center;justify-content:center}
 .dr-step h3{margin:0;font-size:22px;font-weight:900}
 .dr-step p{margin:0;font-size:16px;line-height:1.7;color:var(--ink-3)}
 
-/* 친환경 */
 .dr-eco{background:var(--eco-bg)}
 .dr-eco .dr-eyebrow{color:var(--eco)}
 .dr-eco .dr-lead{color:#3D5560}
@@ -1672,13 +1658,11 @@ footer strong {
 .dr-benefits h3{margin:0;font-size:21px;font-weight:900}
 .dr-benefits p{margin:0;font-size:16px;line-height:1.7;color:#3D5560}
 
-/* 기능 */
 .dr-feats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px}
 .dr-feat{background:#fff;border-radius:20px;padding:32px;display:flex;flex-direction:column;gap:12px}
 .dr-feat h3{margin:0;font-size:19px;font-weight:900}
 .dr-feat p{margin:0;font-size:15px;line-height:1.7;color:var(--ink-3)}
 
-/* 문의 */
 .dr-contact{padding:120px 48px;background:#fff}
 .dr-cta{max-width:1160px;margin:0 auto;border-radius:32px;background:#EAF2FB;padding:72px 48px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:40px}
 .dr-cta > div{flex:1 1 420px;display:flex;flex-direction:column;gap:16px}
@@ -1687,13 +1671,11 @@ footer strong {
 .dr-cta .info{font-size:16px;font-weight:500;color:var(--navy)}
 .dr-cta .dr-btn{min-height:60px;padding:0 32px;border-radius:16px;font-size:17px}
 
-/* 푸터 */
 .dr-footer{padding:48px;background:var(--ground);border-top:1px solid #E1E8F2}
 .dr-footer > div{max-width:1160px;margin:0 auto;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:20px}
 .dr-footer .brand{display:flex;align-items:center;gap:16px;font-size:15px;color:var(--ink-3)}
 .dr-footer small{font-size:14px;color:#5A6B88}
 
-/* ----- 반응형 ----- */
 @media (max-width:1080px){
   .dr-feats,.dr-loop{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
@@ -1718,4 +1700,193 @@ footer strong {
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
   .dr-rain i,.dr-splashes i,.dr-hint svg{animation:none}
+}
+
+/* ========== MODAL & QR CODE ========== */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(13, 36, 84, 0.6);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3000;
+  padding: 20px;
+  animation: fadeIn 0.2s ease;
+}
+
+.modal-overlay[hidden] {
+  display: none !important;
+}
+
+.modal-card {
+  background: white;
+  width: 100%;
+  max-width: 420px;
+  border-radius: 20px;
+  padding: 30px 24px;
+  position: relative;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  animation: popIn 0.25s ease;
+}
+
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes popIn { from { opacity: 0; transform: scale(0.92); } to { opacity: 1; transform: scale(1); } }
+
+.modal-close {
+  position: absolute;
+  top: 16px;
+  right: 18px;
+  border: none;
+  background: none;
+  font-size: 24px;
+  color: var(--muted);
+  cursor: pointer;
+  line-height: 1;
+}
+
+.modal-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  background: var(--light-blue);
+  color: var(--blue);
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.modal-header h2 {
+  font-size: 22px;
+  color: var(--navy);
+  margin-bottom: 6px;
+}
+
+.modal-header p {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.qr-box {
+  background: #f8fafc;
+  border: 2px dashed #cbd5e1;
+  border-radius: 16px;
+  padding: 20px;
+  margin: 20px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#qrcode img, #qrcode canvas {
+  display: block;
+  margin: 0 auto;
+}
+
+.modal-info {
+  width: 100%;
+  background: var(--background);
+  border-radius: 12px;
+  padding: 14px 16px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 13px;
+}
+
+.modal-info div {
+  display: flex;
+  justify-content: space-between;
+  color: var(--text);
+}
+
+.modal-info span {
+  color: var(--muted);
+}
+
+.modal-actions {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.modal-actions button {
+  width: 100%;
+  padding: 13px;
+  font-size: 14px;
+}
+
+.pay-header {
+  margin-bottom: 20px;
+}
+
+.pay-logo {
+  font-size: 12px;
+  font-weight: 900;
+  color: var(--blue);
+  letter-spacing: 1px;
+}
+
+.pay-details {
+  width: 100%;
+  background: #f8fafc;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 20px;
+}
+
+.pay-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  margin-bottom: 8px;
+  color: #475569;
+}
+
+.pay-row.total {
+  margin-bottom: 0;
+  font-size: 16px;
+  color: var(--navy);
+}
+
+.pay-divider {
+  border: none;
+  border-top: 1px dashed var(--border);
+  margin: 12px 0;
+}
+
+.pay-methods {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.pay-method {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: left;
+}
+
+.pay-method.active {
+  border-color: var(--blue);
+  background: var(--light-blue);
+  color: var(--blue);
 }
