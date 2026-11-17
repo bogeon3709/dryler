@@ -15,6 +15,9 @@
 
   <link rel="icon" type="image/png" href="images/logo-mark.png">
   <link rel="stylesheet" href="style.css">
+
+  <!-- QR 코드 생성 라이브러리 (QRCode.js) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
 <body>
 
@@ -521,5 +524,67 @@
 <!-- 카카오맵: appkey= 뒤의 글자를 내 JavaScript 키로 바꾸세요 -->
 <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=5b1c6471ab4f89ff20978c42020a10ad&autoload=false"></script>
 <script src="script.js"></script>
+
+<!-- =====================================================
+     QR 코드 대여 / 가상 결제 모달 팝업
+     ===================================================== -->
+<!-- 1. QR코드 안내 모달 -->
+<div class="modal-overlay" id="qrModal" hidden>
+  <div class="modal-card">
+    <button class="modal-close" id="closeQrModal" aria-label="닫기">×</button>
+    <div class="modal-header">
+      <span class="modal-badge">우산 대여</span>
+      <h2 id="qrStationName">강남역 대여소</h2>
+      <p>스마트폰 카메라로 아래 QR 코드를 스캔하여 결제를 진행하세요.</p>
+    </div>
+    
+    <div class="qr-box">
+      <div id="qrcode"></div>
+    </div>
+
+    <div class="modal-info">
+      <div><span>대여 요금</span><strong>1,000원 / 24시간</strong></div>
+      <div><span>보증금</span><strong>2,000원 (반납 시 환불)</strong></div>
+    </div>
+
+    <div class="modal-actions">
+      <button class="solid-btn" id="simScanBtn">📱 모바일 결제 화면 미리보기 (테스트용)</button>
+    </div>
+  </div>
+</div>
+
+<!-- 2. 가상 결제 화면 모달 -->
+<div class="modal-overlay" id="payModal" hidden>
+  <div class="modal-card pay-card">
+    <button class="modal-close" id="closePayModal" aria-label="닫기">×</button>
+    <div class="pay-header">
+      <span class="pay-logo">DRYLER Pay</span>
+      <h2>우산 대여 결제</h2>
+    </div>
+
+    <div class="pay-details">
+      <div class="pay-row"><span>이용 대여소</span><strong id="payStationName">-</strong></div>
+      <div class="pay-row"><span>대여 이용료</span><span>1,000 원</span></div>
+      <div class="pay-row"><span>보관 보증금</span><span>2,000 원</span></div>
+      <hr class="pay-divider">
+      <div class="pay-row total"><span>최종 결제 금액</span><strong>3,000 원</strong></div>
+    </div>
+
+    <div class="pay-methods">
+      <label class="pay-method active">
+        <input type="radio" name="payMethod" checked> 카카오페이 / 토스
+      </label>
+      <label class="pay-method">
+        <input type="radio" name="payMethod"> 신용/체크카드
+      </label>
+    </div>
+
+    <div class="modal-actions">
+      <button class="solid-btn pay-btn" id="completePayBtn">3,000원 결제하기</button>
+      <button class="ghost-btn" id="cancelPayBtn">취소</button>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
