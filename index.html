@@ -5,13 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>드라일러 | 우산 공유 운영 관리</title>
 
-  <!-- Pretendard (Google Fonts에는 없어서 jsDelivr에서 불러옴) -->
+  <!-- Pretendard 글꼴 -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
-
-  <!-- 랜딩 페이지 글꼴 -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap">
 
   <link rel="icon" type="image/png" href="images/logo-mark.png">
   <link rel="stylesheet" href="style.css">
@@ -22,187 +17,9 @@
 <body>
 
 <!-- =====================================================
-     랜딩(홍보) 페이지 — 사이트를 열면 먼저 보이는 화면
-     '대여소 현황' 버튼(#home)을 누르면 관리자 대시보드로 이동
+     관리자 대시보드 (기본 첫 화면으로 설정)
      ===================================================== -->
-<div class="landing" id="landing">
-<!-- ===== 히어로: 비 → 맑음 ===== -->
-<section class="dr-hero" id="top">
-  <div class="dr-stage">
-    <div class="dr-sun" aria-hidden="true"></div>
-    <div class="dr-clouds" aria-hidden="true"><span></span><span></span><span></span></div>
-
-    <nav class="dr-nav">
-      <a class="dr-logo" href="#top" aria-label="DRYLER 홈">
-        <img class="white" src="images/logo-white.png" alt="">
-        <img class="navy" src="images/logo-navy.png" alt="DRYLER">
-      </a>
-      <div class="dr-links">
-        <a href="#service">서비스</a>
-        <a href="#how">이용 방법</a>
-        <a href="#eco">친환경</a>
-        <a href="#contact">설치 문의</a>
-        <a href="#home" class="dr-nav-admin">대여소 현황</a>
-      </div>
-    </nav>
-
-    <div class="dr-intro">
-      <p>ON A RAINY DAY</p>
-      <h2>갑자기 쏟아지는 비,<br>우산은 늘 집에 있죠.</h2>
-    </div>
-
-    <div class="dr-row">
-      <div class="dr-product">
-        <img src="images/station.jpg" alt="DRYLER 스마트 우산 스테이션 외관. 터치스크린과 대여용·판매용 우산 보관함이 있다.">
-      </div>
-      <div class="dr-copy">
-        <span class="dr-pill">스마트 우산 스테이션</span>
-        <h1>당신의 일상에<br>가장 가까운 우산</h1>
-        <p>빌려 쓰고 반납하거나, 바로 구매해 내 것으로. 비 오는 날, 가까운 DRYLER 스테이션에서 우산을 만나보세요.</p>
-        <div class="dr-btns">
-          <a class="dr-btn primary" href="#service">서비스 알아보기</a>
-          <a class="dr-btn ghost" href="#contact">설치 문의</a>
-          <a class="dr-btn ghost" href="#home">대여소 현황 보기</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="dr-rain" aria-hidden="true"></div>
-    <div class="dr-splashes" aria-hidden="true"></div>
-
-    <div class="dr-hint">
-      <span>스크롤을 내려 비를 그치게 해보세요</span>
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
-    </div>
-  </div>
-</section>
-
-<!-- ===== 서비스 ===== -->
-<section class="dr-sec" id="service">
-  <div class="dr-wrap">
-    <div class="dr-head">
-      <span class="dr-eyebrow">SERVICE</span>
-      <h2 class="dr-title">필요한 만큼만,<br>대여 또는 구매</h2>
-      <p class="dr-lead">하나의 스테이션에서 두 가지 방법으로 우산을 이용할 수 있어요.</p>
-    </div>
-    <div class="dr-services">
-      <div class="dr-service">
-        <div class="dr-icon" style="background:#E6EEF9;color:#0D2454">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 0 1 18 0z"/><path d="M12 12v7a2 2 0 0 0 4 0"/><path d="M12 3V2"/></svg>
-        </div>
-        <h3>우산 대여</h3>
-        <p>필요할 때 빌려 쓰고, 사용 후 반납하는 공유 우산이에요. 화면에서 지금 이용 가능한 대여용 우산 개수를 바로 확인할 수 있어요.</p>
-        <span class="dr-price">이용 요금 [대여 요금]</span>
-      </div>
-      <div class="dr-service">
-        <div class="dr-icon" style="background:#FDEFD9;color:#9A5510">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/><path d="M2 3h3l2.6 12.2a2 2 0 0 0 2 1.6h8.2a2 2 0 0 0 2-1.5L22 8H6"/></svg>
-        </div>
-        <h3>우산 구매</h3>
-        <p>반납 걱정 없이 내 우산으로 갖고 싶다면 바로 구매하세요. 판매용 우산은 별도 보관함에 따로 준비되어 있어요.</p>
-        <span class="dr-price">판매 가격 [판매 가격]</span>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ===== 이용 방법 ===== -->
-<section class="dr-sec" id="how" style="background:#fff">
-  <div class="dr-wrap">
-    <div class="dr-head">
-      <span class="dr-eyebrow">HOW IT WORKS</span>
-      <h2 class="dr-title">세 번의 터치면 충분해요</h2>
-    </div>
-    <div class="dr-steps">
-      <div class="dr-step"><span class="dr-num">1</span><h3>서비스 선택</h3><p>터치스크린에서 ‘우산 대여’ 또는 ‘우산 구매’를 선택해요.</p></div>
-      <div class="dr-step"><span class="dr-num">2</span><h3>간편 결제</h3><p>카드·간편결제 또는 QR 결제로 빠르게 결제해요.</p></div>
-      <div class="dr-step"><span class="dr-num">3</span><h3>꺼내서 출발</h3><p>우산을 꺼내 바로 사용해요. 대여한 우산은 사용 후 반납하면 끝.</p></div>
-    </div>
-  </div>
-</section>
-
-<!-- ===== 친환경 ===== -->
-<section class="dr-sec dr-eco" id="eco">
-  <div class="dr-wrap">
-    <div class="dr-head">
-      <span class="dr-eyebrow">ECO</span>
-      <h2 class="dr-title">한 번 쓰고 버리는 우산 대신,<br>다시 쓰는 우산</h2>
-      <p class="dr-lead">갑작스러운 비에 급하게 산 우산은 금세 잊히고 버려지기 쉬워요. DRYLER는 빌리고 반납하는 순환 구조로, 우산 하나가 여러 사람의 비 오는 날을 함께해요.</p>
-    </div>
-    <div class="dr-loop">
-      <div><span class="n">01</span><strong>빌리고</strong><span>비가 오면 가까운 스테이션에서 대여해요.</span></div>
-      <div><span class="n">02</span><strong>쓰고</strong><span>필요한 동안만 내 우산처럼 사용해요.</span></div>
-      <div><span class="n">03</span><strong>반납하고</strong><span>다 쓴 우산은 스테이션에 돌려놓아요.</span></div>
-      <div class="last">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 4v5h-5"/></svg>
-        <strong>다시 누군가에게</strong><span>반납된 우산은 다음 사람의 비 오는 날을 지켜줘요.</span>
-      </div>
-    </div>
-    <div class="dr-benefits">
-      <div><h3>일회용 우산 줄이기</h3><p>급할 때마다 새 우산을 사지 않아도 되니, 집에 쌓이고 버려지는 우산이 줄어들어요.</p></div>
-      <div><h3>자원이 순환하는 구조</h3><p>우산 한 개를 여러 사람이 반복해서 사용해, 같은 자원으로 더 많은 사람이 비를 피해요.</p></div>
-      <div><h3>함께 만드는 습관</h3><p>반납 한 번이 다음 사람을 위한 배려가 돼요. 작은 습관이 모여 더 깨끗한 도시를 만들어요.</p></div>
-    </div>
-  </div>
-</section>
-
-<!-- ===== 기능 ===== -->
-<section class="dr-sec">
-  <div class="dr-wrap">
-    <div class="dr-head">
-      <span class="dr-eyebrow">FEATURES</span>
-      <h2 class="dr-title">작지만 똑똑한 디테일</h2>
-    </div>
-    <div class="dr-feats">
-      <div class="dr-feat">
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0D2454" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M8 10v6M12 8v8M16 12v4"/></svg>
-        <h3>실시간 재고 표시</h3><p>대여용·판매용 우산의 이용 가능 개수를 보관함 위에서 바로 보여줘요.</p>
-      </div>
-      <div class="dr-feat">
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0D2454" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 16a4 4 0 0 1-.5-8A6 6 0 0 1 18 9a3.5 3.5 0 0 1 0 7z"/><path d="M9 19l-1 2M13 19l-1 2M17 19l-1 2"/></svg>
-        <h3>날씨·시간 안내</h3><p>메인 화면에서 현재 날짜, 시간, 날씨와 기온을 함께 확인할 수 있어요.</p>
-      </div>
-      <div class="dr-feat">
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0D2454" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg>
-        <h3>다국어 지원</h3><p>언어 설정으로 외국인 방문객도 어렵지 않게 이용할 수 있어요.</p>
-      </div>
-      <div class="dr-feat">
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0D2454" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v2M5.6 5.6l1.4 1.4M3 12h2M19 12h2M17 7l1.4-1.4"/><path d="M8 15a4 4 0 1 1 8 0"/><path d="M4 19h16"/></svg>
-        <h3>눈에 띄는 LED 라이팅</h3><p>따뜻한 조명으로 비 오는 밤에도 멀리서 스테이션을 찾을 수 있어요.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ===== 설치 문의 ===== -->
-<section class="dr-contact" id="contact">
-  <div class="dr-cta">
-    <div>
-      <h2>우리 공간에도<br>DRYLER를 들여보세요</h2>
-      <p>건물 로비, 역사, 캠퍼스, 상업 시설처럼 사람들이 오가는 곳이라면 어디든 잘 어울려요.</p>
-      <p class="info">[이메일 주소] · [전화번호]</p>
-    </div>
-    <!-- 실제 이메일로 바꿔주세요: mailto:hello@example.com -->
-    <a class="dr-btn primary" href="mailto:[이메일 주소]">설치 문의하기
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-    </a>
-  </div>
-</section>
-
-<footer class="dr-footer">
-  <div>
-    <div class="brand"><img src="images/logo-navy.png" alt="DRYLER" width="60" height="43"><span>당신의 일상에 가장 가까운 우산</span></div>
-    <small>© 2026 DRYLER. All rights reserved.</small>
-  </div>
-</footer>
-</div>
-
-<!-- =====================================================
-     관리자 대시보드
-     ===================================================== -->
-<div class="app" hidden>
-
-  <!-- ========== SIDEBAR ========== -->
+<div class="app">
   <aside class="sidebar">
     <a href="#home" class="brand">
       <img class="brand-icon" src="images/logo-mark.png" alt="드라일러 로고">
@@ -214,7 +31,7 @@
 
     <div class="menu-label">운영</div>
     <nav class="side-menu">
-      <a href="#home" class="menu-item" data-page="home"><span>▦</span> 홈</a>
+      <a href="#home" class="menu-item active" data-page="home"><span>▦</span> 홈</a>
       <a href="#map" class="menu-item" data-page="map"><span>⌖</span> 위치</a>
       <a href="#favorites" class="menu-item" data-page="favorites"><span>★</span> 즐겨찾기</a>
       <a href="#history" class="menu-item" data-page="history"><span>↔</span> 이용내역</a>
@@ -231,14 +48,11 @@
     </nav>
 
     <div class="sidebar-bottom">
-      <a href="#top" class="site-link">↗ 홈페이지 보기</a>
       <div class="version">DRYLER v1.1</div>
     </div>
   </aside>
 
-  <!-- ========== MAIN ========== -->
   <main class="main-content">
-
     <header class="topbar">
       <div>
         <span class="breadcrumb" id="breadcrumb">드라일러 / 홈</span>
@@ -246,18 +60,18 @@
       </div>
       <div class="topbar-right">
         <span class="live-status"><span class="live-dot"></span> 시스템 운영 중</span>
-        <a href="#profile" class="admin-profile">
-          <div class="profile-icon" id="topAvatar">관</div>
+        <a href="#profile" class="admin-profile" style="display:flex; align-items:center; gap:10px;">
+          <div class="profile-icon" id="topAvatar" style="width:36px; height:36px; background:#e4edfc; color:#3478e5; border-radius:50%; display:grid; place-items:center; font-weight:700;">관</div>
           <div>
-            <strong id="topName">관리자</strong>
-            <small>운영 관리 계정</small>
+            <strong id="topName" style="display:block; font-size:13px;">관리자</strong>
+            <small style="font-size:11px; color:#8995a7;">운영 관리 계정</small>
           </div>
         </a>
       </div>
     </header>
 
-    <!-- ===== 홈 ===== -->
-    <div class="page" id="page-home">
+    <!-- 홈 페이지 -->
+    <div class="page active" id="page-home">
       <section class="welcome">
         <div>
           <h2>비 오는 날에도,<br>모든 대여소를 한눈에</h2>
@@ -342,7 +156,7 @@
       </section>
     </div>
 
-    <!-- ===== 위치 ===== -->
+    <!-- 위치 페이지 -->
     <div class="page" id="page-map">
       <section class="block first">
         <div class="map-layout">
@@ -351,25 +165,12 @@
             <div class="map-legend">
               <span><i class="pin-sample subway"></i>지하철역</span>
               <span><i class="pin-sample school"></i>학교</span>
-              <span class="legend-gap"><i class="dot normal"></i>정상</span>
-              <span><i class="dot low"></i>재고 부족</span>
-              <span><i class="dot empty"></i>재고 없음</span>
-              <span class="legend-note">숫자는 설치된 대여기 대수</span>
             </div>
           </div>
-
           <aside class="map-side">
             <div class="map-summary">
-              <div>
-                <span>지하철역</span>
-                <strong id="sumSubway">0곳</strong>
-                <small id="sumSubwayMachines">대여기 0대</small>
-              </div>
-              <div>
-                <span>학교</span>
-                <strong id="sumSchool">0곳</strong>
-                <small id="sumSchoolMachines">대여기 0대</small>
-              </div>
+              <div><span>지하철역</span><strong id="sumSubway">0곳</strong><small id="sumSubwayMachines">대여기 0대</small></div>
+              <div><span>학교</span><strong id="sumSchool">0곳</strong><small id="sumSchoolMachines">대여기 0대</small></div>
             </div>
             <div class="tabs" id="mapTabs">
               <button class="tab active" data-filter="all">전체</button>
@@ -382,31 +183,24 @@
       </section>
     </div>
 
-    <!-- ===== 즐겨찾기 ===== -->
+    <!-- 즐겨찾기 페이지 -->
     <div class="page" id="page-favorites">
       <section class="block first">
         <div class="section-heading">
-          <div>
-            <h2>즐겨찾는 대여소</h2>
-            <p>자주 확인하는 대여소를 모아서 관리합니다.</p>
-          </div>
+          <div><h2>즐겨찾는 대여소</h2></div>
           <span class="pill-label" id="favoriteCount">0곳</span>
         </div>
         <div class="station-grid" id="favoriteList"></div>
       </section>
     </div>
 
-    <!-- ===== 이용내역 ===== -->
+    <!-- 이용내역 페이지 -->
     <div class="page" id="page-history">
       <section class="block first">
         <div class="section-heading">
-          <div>
-            <h2>전체 이용내역</h2>
-            <p>모든 대여소의 대여·반납 기록</p>
-          </div>
+          <div><h2>전체 이용내역</h2></div>
           <span class="pill-label" id="historyCount">0건</span>
         </div>
-
         <div class="tools">
           <input type="search" id="historySearch" placeholder="대여소 이름 검색">
           <select id="historyType">
@@ -420,7 +214,6 @@
             <option value="week">최근 7일</option>
           </select>
         </div>
-
         <div class="table">
           <div class="table-header"><span>대여소</span><span>구분</span><span>수량</span><span>일시</span></div>
           <div id="historyList"></div>
@@ -428,31 +221,19 @@
       </section>
     </div>
 
-    <!-- ===== 공지사항 ===== -->
+    <!-- 공지사항 페이지 -->
     <div class="page" id="page-notice">
       <section class="block first two-col">
         <form class="panel" id="noticeForm">
           <h2>새 공지 작성</h2>
-          <label>
-            제목
-            <input type="text" id="noticeTitle" maxlength="60" required placeholder="예: 11월 정기 점검 안내">
-          </label>
-          <label>
-            내용
-            <textarea id="noticeContent" rows="6" required placeholder="이용자에게 안내할 내용을 입력하세요."></textarea>
-          </label>
-          <label class="check">
-            <input type="checkbox" id="noticePinned"> 상단 고정
-          </label>
+          <label>제목 <input type="text" id="noticeTitle" maxlength="60" required></label>
+          <label>내용 <textarea id="noticeContent" rows="6" required></textarea></label>
+          <label class="check"><input type="checkbox" id="noticePinned"> 상단 고정</label>
           <button type="submit" class="solid-btn">공지 등록</button>
         </form>
-
         <div>
           <div class="section-heading">
-            <div>
-              <h2>등록된 공지</h2>
-              <p>제목을 누르면 내용을 볼 수 있습니다.</p>
-            </div>
+            <div><h2>등록된 공지</h2></div>
             <span class="pill-label" id="noticeCount">0건</span>
           </div>
           <div class="stack" id="noticeList"></div>
@@ -460,14 +241,11 @@
       </section>
     </div>
 
-    <!-- ===== 고객센터 ===== -->
+    <!-- 고객센터 페이지 -->
     <div class="page" id="page-support">
       <section class="block first">
         <div class="section-heading">
-          <div>
-            <h2>이용자 문의</h2>
-            <p>문의를 열어 답변을 등록하세요.</p>
-          </div>
+          <div><h2>이용자 문의</h2></div>
           <div class="tabs" id="supportTabs">
             <button class="tab active" data-filter="all">전체</button>
             <button class="tab" data-filter="pending">답변 대기</button>
@@ -478,33 +256,30 @@
       </section>
     </div>
 
-    <!-- ===== 내정보 ===== -->
+    <!-- 내정보 페이지 -->
     <div class="page" id="page-profile">
       <section class="block first two-col">
         <div class="panel profile-card">
-          <div class="profile-big" id="profileAvatar">관</div>
-          <strong id="profileName">관리자</strong>
-          <span>운영 관리 계정</span>
-          <dl>
-            <div><dt>담당 구역</dt><dd id="profileArea">-</dd></div>
-            <div><dt>오늘 처리</dt><dd id="profileToday">0건</dd></div>
-            <div><dt>답변 대기 문의</dt><dd id="profilePending">0건</dd></div>
+          <div class="profile-big" id="profileAvatar" style="width:64px; height:64px; background:#e4edfc; color:#3478e5; border-radius:50%; display:grid; place-items:center; font-size:24px; font-weight:700; margin:0 auto 12px;">관</div>
+          <strong id="profileName" style="font-size:18px;">관리자</strong>
+          <span style="font-size:12px; color:#8995a7;">운영 관리 계정</span>
+          <dl style="width:100%; margin-top:16px; display:flex; flex-direction:column; gap:8px;">
+            <div style="display:flex; justify-content:space-between; font-size:13px;"><dt style="color:#8995a7;">담당 구역</dt><dd id="profileArea">-</dd></div>
+            <div style="display:flex; justify-content:space-between; font-size:13px;"><dt style="color:#8995a7;">오늘 처리</dt><dd id="profileToday">0건</dd></div>
+            <div style="display:flex; justify-content:space-between; font-size:13px;"><dt style="color:#8995a7;">답변 대기 문의</dt><dd id="profilePending">0건</dd></div>
           </dl>
         </div>
-
         <form class="panel" id="profileForm">
           <h2>계정 정보</h2>
           <label>이름 <input type="text" id="pfName" required maxlength="20"></label>
           <label>이메일 <input type="email" id="pfEmail" required></label>
           <label>연락처 <input type="tel" id="pfPhone"></label>
           <label>담당 구역 <input type="text" id="pfArea"></label>
-
-          <h2 class="sub">알림 설정</h2>
+          <h2 class="sub" style="margin-top:10px;">알림 설정</h2>
           <label class="check"><input type="checkbox" id="pfAlertLow"> 재고 부족 대여소 알림 받기</label>
           <label class="check"><input type="checkbox" id="pfAlertInquiry"> 새 문의 알림 받기</label>
-
-          <div class="form-actions">
-            <button type="submit" class="solid-btn">변경 내용 저장</button>
+          <div class="form-actions" style="display:flex; gap:10px; margin-top:10px;">
+            <button type="submit" class="solid-btn" style="flex:1;">변경 내용 저장</button>
             <button type="button" class="ghost-btn danger" data-action="reset-data">예시 데이터로 초기화</button>
           </div>
         </form>
@@ -512,23 +287,21 @@
     </div>
 
     <footer>
-      <strong class="footer-brand"><img src="images/logo-mark.png" alt="">드라일러</strong>
+      <strong class="footer-brand"><img src="images/logo-mark.png" alt="" width="20" style="vertical-align:middle; margin-right:6px;">드라일러</strong>
       <span>© 2026 DRYLER. ALL RIGHTS RESERVED.</span>
     </footer>
-
   </main>
 </div>
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<!-- 카카오맵: appkey= 뒤의 글자를 내 JavaScript 키로 바꾸세요 -->
+<!-- 카카오맵 스크립트 -->
 <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=5b1c6471ab4f89ff20978c42020a10ad&autoload=false"></script>
 <script src="script.js"></script>
 
 <!-- =====================================================
-     QR 코드 대여 / 가상 결제 모달 팝업
+     QR 코드 대여 / 가상 결제 모달 팝업 HTML
      ===================================================== -->
-<!-- 1. QR코드 안내 모달 -->
 <div class="modal-overlay" id="qrModal" hidden>
   <div class="modal-card">
     <button class="modal-close" id="closeQrModal" aria-label="닫기">×</button>
@@ -537,23 +310,19 @@
       <h2 id="qrStationName">강남역 대여소</h2>
       <p>스마트폰 카메라로 아래 QR 코드를 스캔하여 결제를 진행하세요.</p>
     </div>
-    
     <div class="qr-box">
       <div id="qrcode"></div>
     </div>
-
     <div class="modal-info">
       <div><span>대여 요금</span><strong>1,000원 / 24시간</strong></div>
       <div><span>보증금</span><strong>2,000원 (반납 시 환불)</strong></div>
     </div>
-
     <div class="modal-actions">
       <button class="solid-btn" id="simScanBtn">📱 모바일 결제 화면 미리보기 (테스트용)</button>
     </div>
   </div>
 </div>
 
-<!-- 2. 가상 결제 화면 모달 -->
 <div class="modal-overlay" id="payModal" hidden>
   <div class="modal-card pay-card">
     <button class="modal-close" id="closePayModal" aria-label="닫기">×</button>
@@ -561,7 +330,6 @@
       <span class="pay-logo">DRYLER Pay</span>
       <h2>우산 대여 결제</h2>
     </div>
-
     <div class="pay-details">
       <div class="pay-row"><span>이용 대여소</span><strong id="payStationName">-</strong></div>
       <div class="pay-row"><span>대여 이용료</span><span>1,000 원</span></div>
@@ -569,16 +337,10 @@
       <hr class="pay-divider">
       <div class="pay-row total"><span>최종 결제 금액</span><strong>3,000 원</strong></div>
     </div>
-
     <div class="pay-methods">
-      <label class="pay-method active">
-        <input type="radio" name="payMethod" checked> 카카오페이 / 토스
-      </label>
-      <label class="pay-method">
-        <input type="radio" name="payMethod"> 신용/체크카드
-      </label>
+      <label class="pay-method active"><input type="radio" name="payMethod" checked> 카카오페이 / 토스</label>
+      <label class="pay-method"><input type="radio" name="payMethod"> 신용/체크카드</label>
     </div>
-
     <div class="modal-actions">
       <button class="solid-btn pay-btn" id="completePayBtn">3,000원 결제하기</button>
       <button class="ghost-btn" id="cancelPayBtn">취소</button>
