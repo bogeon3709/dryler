@@ -2,8 +2,6 @@
 // DRYLER (드라일러)
 // 우산 공유 운영 관리자 페이지
 // =====================================
-// 데이터는 브라우저 localStorage에 저장됩니다.
-// 실제 운영 시에는 서버 데이터베이스와 연결해야 합니다.
 
 const STORAGE_KEY = "dryler-state-v2";
 
@@ -11,9 +9,6 @@ const STORAGE_KEY = "dryler-state-v2";
 const UMBRELLAS_PER_MACHINE = 10;
 
 // ---------- 예시 데이터 ----------
-// 설치 대수와 재고는 예시 값입니다.
-// [이름, 구, 노선, 위도, 경도, 대여기 대수, 대여 가능 우산]
-
 const SUBWAY_DATA = [
   ["강남역",               "강남구",   "2호선·신분당선",      37.4979, 127.0276, 4, 22],
   ["시청역",               "중구",     "1·2호선",             37.5657, 126.9769, 3, 6],
@@ -39,7 +34,6 @@ const SUBWAY_DATA = [
   ["이태원역",             "용산구",   "6호선",               37.5345, 126.9946, 1, 8]
 ];
 
-// [이름, 구, 위도, 경도, 대여기 대수, 대여 가능 우산]
 const SCHOOL_DATA = [
   ["서울대학교",     "관악구",   37.4600, 126.9519, 2, 13],
   ["연세대학교",     "서대문구", 37.5658, 126.9386, 2, 9],
@@ -86,15 +80,11 @@ function createDefaultState() {
       time: hoursAgo(h)
     })),
     notices: [
-      { id: 1, title: "11월 대여소 정기 점검 안내", content: "11월 10일(화) 02:00~05:00 동안 전체 대여소 시스템 점검이 진행됩니다. 점검 시간에는 대여와 반납이 일시 중단됩니다.", pinned: true, date: hoursAgo(48) },
-      { id: 2, title: "대학교 대여기 추가 설치 안내", content: "2학기 이용량 증가에 따라 서강대학교와 이화여자대학교에 대여기를 1대씩 추가 설치할 예정입니다.", pinned: false, date: hoursAgo(96) },
-      { id: 3, title: "장마철 반납 기한 안내", content: "우천 시 대여 후 48시간 이내 반납을 권장드립니다.", pinned: false, date: hoursAgo(240) }
+      { id: 1, title: "11월 대여소 정기 점검 안내", content: "11월 10일(화) 02:00~05:00 동안 전체 대여소 시스템 점검이 진행됩니다.", pinned: true, date: hoursAgo(48) },
+      { id: 2, title: "대학교 대여기 추가 설치 안내", content: "2학기 이용량 증가에 따라 서강대학교와 이화여자대학교에 대여기를 추가 설치합니다.", pinned: false, date: hoursAgo(96) }
     ],
     inquiries: [
-      { id: 1, user: "김*연", title: "반납했는데 대여 중으로 표시돼요", content: "어제 저녁 시청역에 반납했는데 앱에서 아직 대여 중으로 나옵니다. 확인 부탁드립니다.", date: hoursAgo(2), answer: null },
-      { id: 2, user: "박*호", title: "서울역 대여소에 우산이 없어요", content: "오늘 아침부터 서울역 대여소에 우산이 하나도 없습니다. 언제 채워지나요?", date: hoursAgo(5), answer: null },
-      { id: 3, user: "이*진", title: "우산 손잡이가 파손되어 있었습니다", content: "강남역에서 빌린 우산 손잡이가 깨져 있었습니다.", date: hoursAgo(30), answer: "불편을 드려 죄송합니다. 해당 우산은 회수 후 교체 조치했습니다." },
-      { id: 4, user: "최*우", title: "대여 가능 시간이 궁금합니다", content: "새벽에도 대여가 가능한가요?", date: hoursAgo(72), answer: "모든 대여소는 지하철 운행 시간 동안 이용하실 수 있습니다." }
+      { id: 1, user: "김*연", title: "반납했는데 대여 중으로 표시돼요", content: "어제 저녁 시청역에 반납했는데 앱에서 아직 대여 중으로 나옵니다.", date: hoursAgo(2), answer: null }
     ],
     profile: {
       name: "관리자",
@@ -106,8 +96,6 @@ function createDefaultState() {
     }
   };
 }
-
-// ---------- 저장 / 불러오기 ----------
 
 function loadState() {
   try {
@@ -129,13 +117,10 @@ function saveState() {
 
 let state = loadState();
 
-// ---------- 공통 유틸 ----------
-
 function $(id) {
   return document.getElementById(id);
 }
 
-// 사용자가 입력한 글자를 안전하게 화면에 표시
 function escapeHTML(text) {
   return String(text).replace(/[&<>"']/g, ch => ({
     "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
@@ -163,6 +148,7 @@ function isToday(iso) {
 let toastTimer;
 function showToast(message) {
   const toast = $("toast");
+  if (!toast) return;
   toast.textContent = message;
   toast.classList.add("show");
   clearTimeout(toastTimer);
@@ -173,15 +159,11 @@ function findStation(id) {
   return state.stations.find(s => s.id === id);
 }
 
-// ---------- 대여소 상태 ----------
-
 function getStatus(station) {
   if (station.available === 0) return { text: "재고 없음", className: "empty" };
   if (station.available <= station.total * 0.2) return { text: "재고 부족", className: "low" };
   return { text: "정상 운영", className: "normal" };
 }
-
-// ---------- 페이지 이동 ----------
 
 const PAGES = {
   home:      { title: "통합 운영 대시보드", crumb: "홈" },
@@ -194,23 +176,23 @@ const PAGES = {
 };
 
 let pendingFocusId = null;
-
-// 랜딩 페이지에 속한 주소(#)들: 비어 있거나 이 중 하나면 랜딩을 보여줌
 const LANDING_SECTIONS = ["", "top", "service", "how", "eco", "contact"];
 
 function showPage() {
   const hash = location.hash.slice(1);
   const onLanding = LANDING_SECTIONS.includes(hash);
 
-  $("landing").hidden = !onLanding;
-  document.querySelector(".app").hidden = onLanding;
+  const landingEl = $("landing");
+  const appEl = document.querySelector(".app");
+  if (landingEl) landingEl.hidden = !onLanding;
+  if (appEl) appEl.hidden = onLanding;
 
   if (onLanding) {
     document.title = "DRYLER — 당신의 일상에 가장 가까운 우산";
     const target = hash && hash !== "top" ? document.getElementById(hash) : null;
     if (target) target.scrollIntoView();
     else window.scrollTo({ top: 0, behavior: "instant" });
-    window.dispatchEvent(new Event("scroll")); // 비 → 맑음 효과 다시 계산
+    window.dispatchEvent(new Event("scroll"));
     return;
   }
 
@@ -225,18 +207,19 @@ function showPage() {
     item.classList.toggle("active", item.dataset.page === pageId);
   });
 
-  $("pageTitle").textContent = PAGES[pageId].title;
-  $("breadcrumb").textContent = `드라일러 / ${PAGES[pageId].crumb}`;
+  const pageTitleEl = $("pageTitle");
+  const breadcrumbEl = $("breadcrumb");
+  if (pageTitleEl) pageTitleEl.textContent = PAGES[pageId].title;
+  if (breadcrumbEl) breadcrumbEl.textContent = `드라일러 / ${PAGES[pageId].crumb}`;
   document.title = `${PAGES[pageId].title} | 드라일러`;
 
   if (pageId === "map") initMap();
-
   if (pageId === "profile") fillProfileForm();
 
   window.scrollTo({ top: 0, behavior: "instant" });
 }
 
-// ---------- 홈: 통계 ----------
+// ---------- 통계 및 홈 화면 렌더링 ----------
 
 function updateStats() {
   const total = state.stations.reduce((sum, s) => sum + s.total, 0);
@@ -244,19 +227,19 @@ function updateStats() {
   const machines = state.stations.reduce((sum, s) => sum + s.machines, 0);
   const subways = state.stations.filter(s => s.type === "subway").length;
 
-  $("totalStations").textContent = state.stations.length;
-  $("stationBreakdown").textContent = `지하철역 ${subways} · 학교 ${state.stations.length - subways}`;
-  $("totalMachines").textContent = `${machines}대`;
-  $("totalUmbrellas").textContent = `전체 우산 ${total}개`;
-  $("availableUmbrellas").textContent = available;
-  $("rentedUmbrellas").textContent = total - available;
+  if ($("totalStations")) $("totalStations").textContent = state.stations.length;
+  if ($("stationBreakdown")) $("stationBreakdown").textContent = `지하철역 ${subways} · 학교 ${state.stations.length - subways}`;
+  if ($("totalMachines")) $("totalMachines").textContent = `${machines}대`;
+  if ($("totalUmbrellas")) $("totalUmbrellas").textContent = `전체 우산 ${total}개`;
+  if ($("availableUmbrellas")) $("availableUmbrellas").textContent = available;
+  if ($("rentedUmbrellas")) $("rentedUmbrellas").textContent = total - available;
 
-  $("todayDate").textContent = new Date().toLocaleDateString("ko-KR", {
-    year: "numeric", month: "long", day: "numeric", weekday: "long"
-  });
+  if ($("todayDate")) {
+    $("todayDate").textContent = new Date().toLocaleDateString("ko-KR", {
+      year: "numeric", month: "long", day: "numeric", weekday: "long"
+    });
+  }
 }
-
-// ---------- 대여소 카드 (홈 + 즐겨찾기 공용) ----------
 
 function stationCardHTML(station) {
   const rented = station.total - station.available;
@@ -299,40 +282,36 @@ function stationCardHTML(station) {
 }
 
 function renderStations() {
-  const search = $("searchInput").value.trim().toLowerCase();
-  const filter = $("statusFilter").value;
-  const type = $("typeFilter").value;
+  const searchInput = $("searchInput");
+  const statusFilter = $("statusFilter");
+  const typeFilter = $("typeFilter");
+  if (!searchInput || !$("stationList")) return;
+
+  const search = searchInput.value.trim().toLowerCase();
+  const filter = statusFilter ? statusFilter.value : "all";
+  const type = typeFilter ? typeFilter.value : "all";
 
   const list = state.stations.filter(s => {
     if (type !== "all" && s.type !== type) return false;
-    const matchesSearch =
-      s.name.toLowerCase().includes(search) ||
-      s.location.toLowerCase().includes(search);
+    const matchesSearch = s.name.toLowerCase().includes(search) || s.location.toLowerCase().includes(search);
     const matchesFilter = filter === "all" || getStatus(s).className === filter;
     return matchesSearch && matchesFilter;
   });
 
-  $("stationCount").textContent = `${list.length}곳`;
-
+  if ($("stationCount")) $("stationCount").textContent = `${list.length}개 대여소`;
   $("stationList").innerHTML = list.length
     ? list.map(stationCardHTML).join("")
     : '<div class="empty-state">조건에 맞는 대여소가 없습니다. 검색어나 필터를 바꿔보세요.</div>';
 }
 
-// ---------- 즐겨찾기 ----------
-
 function renderFavorites() {
   const list = state.stations.filter(s => state.favorites.includes(s.id));
-
-  $("favoriteCount").textContent = `${list.length}곳`;
-
-  $("favoriteList").innerHTML = list.length
-    ? list.map(stationCardHTML).join("")
-    : `<div class="empty-state">
-         아직 즐겨찾기한 대여소가 없습니다.<br>
-         홈의 대여소 카드에서 ☆를 눌러 추가하세요.
-         <a href="#home" class="ghost-btn">대여소 목록으로 가기</a>
-       </div>`;
+  if ($("favoriteCount")) $("favoriteCount").textContent = `${list.length}곳`;
+  if ($("favoriteList")) {
+    $("favoriteList").innerHTML = list.length
+      ? list.map(stationCardHTML).join("")
+      : `<div class="empty-state">아직 즐겨찾기한 대여소가 없습니다.<br>홈의 대여소 카드에서 ☆를 눌러 추가하세요.<a href="#home" class="ghost-btn">대여소 목록으로 가기</a></div>`;
+  }
 }
 
 function toggleFavorite(id) {
@@ -353,7 +332,10 @@ function toggleFavorite(id) {
   renderMapList();
 }
 
-// ---------- 대여 / 반납 ----------
+// ---------- 대여 / 반납 / QR 및 결제 ----------
+
+let currentTargetStation = null;
+let qrcodeInstance = null;
 
 function addHistory(station, type) {
   state.history.unshift({
@@ -363,8 +345,6 @@ function addHistory(station, type) {
     type,
     time: new Date().toISOString()
   });
-
-  // 기록은 최대 500건까지 보관
   state.history = state.history.slice(0, 500);
 }
 
@@ -377,13 +357,60 @@ function rentUmbrella(id) {
     return;
   }
 
-  if (!confirm(`${station.name}\n우산 1개를 대여 처리하시겠습니까?`)) return;
+  currentTargetStation = station;
+  if ($("qrStationName")) $("qrStationName").textContent = station.name;
+
+  const qrContainer = $("qrcode");
+  if (qrContainer) {
+    qrContainer.innerHTML = "";
+    const payUrl = `${window.location.origin}${window.location.pathname}#pay?stationId=${station.id}`;
+    if (typeof QRCode !== "undefined") {
+      qrcodeInstance = new QRCode(qrContainer, {
+        text: payUrl,
+        width: 180,
+        height: 180,
+        colorDark: "#0D2454",
+        colorLight: "#ffffff",
+        correctLevel: QRCode.CorrectLevel.H
+      });
+    }
+  }
+
+  if ($("qrModal")) $("qrModal").hidden = false;
+}
+
+function closeQrModal() {
+  if ($("qrModal")) $("qrModal").hidden = true;
+}
+
+function closePayModal() {
+  if ($("payModal")) $("payModal").hidden = true;
+}
+
+function openPayModal(station) {
+  closeQrModal();
+  currentTargetStation = station;
+  if ($("payStationName")) $("payStationName").textContent = station.name;
+  if ($("payModal")) $("payModal").hidden = false;
+}
+
+function processPayment() {
+  if (!currentTargetStation) return;
+
+  const station = currentTargetStation;
+  if (station.available <= 0) {
+    showToast("그사이 우산 재고가 소진되었습니다.");
+    closePayModal();
+    return;
+  }
 
   station.available--;
   addHistory(station, "rent");
   saveState();
   refreshAll();
-  showToast(`${station.name}: 대여 처리했습니다.`);
+
+  closePayModal();
+  showToast(`[결제 완료] ${station.name}: 우산 대여가 시작되었습니다!`);
 }
 
 function returnUmbrella(id) {
@@ -417,21 +444,22 @@ function historyRowHTML(item) {
   `;
 }
 
-const EMPTY_ROW = `
-  <div class="table-row">
-    <span>기록이 없습니다.</span><span>-</span><span>-</span><span>-</span>
-  </div>
-`;
+const EMPTY_ROW = `<div class="table-row"><span>기록이 없습니다.</span><span>-</span><span>-</span><span>-</span></div>`;
 
 function renderRecent() {
   const recent = state.history.slice(0, 5);
-  $("recentList").innerHTML = recent.length ? recent.map(historyRowHTML).join("") : EMPTY_ROW;
+  if ($("recentList")) $("recentList").innerHTML = recent.length ? recent.map(historyRowHTML).join("") : EMPTY_ROW;
 }
 
 function renderHistory() {
-  const search = $("historySearch").value.trim().toLowerCase();
-  const type = $("historyType").value;
-  const period = $("historyPeriod").value;
+  const historySearch = $("historySearch");
+  const historyType = $("historyType");
+  const historyPeriod = $("historyPeriod");
+  if (!historySearch || !$("historyList")) return;
+
+  const search = historySearch.value.trim().toLowerCase();
+  const type = historyType ? historyType.value : "all";
+  const period = historyPeriod ? historyPeriod.value : "all";
   const weekAgo = Date.now() - 7 * 24 * 3600000;
 
   const list = state.history.filter(item => {
@@ -442,12 +470,11 @@ function renderHistory() {
     return true;
   });
 
-  $("historyCount").textContent = `${list.length}건`;
+  if ($("historyCount")) $("historyCount").textContent = `${list.length}건`;
   $("historyList").innerHTML = list.length ? list.map(historyRowHTML).join("") : EMPTY_ROW;
 }
 
 // ---------- 지도 (카카오맵) ----------
-// 실제 지도 위에 예시 데이터의 대여기 위치를 핀으로 표시합니다.
 
 let map = null;
 let mapLoading = false;
@@ -461,16 +488,14 @@ function kakaoAvailable() {
 }
 
 function showMapError() {
-  $("map").innerHTML = `
-    <div class="map-error">
-      <strong>카카오맵을 불러오지 못했습니다.</strong>
-      <p>
-        1. index.html 아래쪽 appkey= 뒤에 JavaScript 키를 넣었는지<br>
-        2. 카카오 디벨로퍼스 Web 플랫폼에 지금 주소(${location.origin})를 등록했는지<br>
-        3. VS Code Live Server로 열었는지 확인하세요.
-      </p>
-    </div>
-  `;
+  if ($("map")) {
+    $("map").innerHTML = `
+      <div class="map-error">
+        <strong>카카오맵을 불러오지 못했습니다.</strong>
+        <p>1. appkey 확인 및 로컬/웹서버 환경을 확인하세요.</p>
+      </div>
+    `;
+  }
 }
 
 function initMap() {
@@ -479,12 +504,10 @@ function initMap() {
     consumePendingFocus();
     return;
   }
-
   if (!kakaoAvailable()) {
     showMapError();
     return;
   }
-
   if (mapLoading) return;
   mapLoading = true;
 
@@ -503,37 +526,23 @@ function createMap() {
     center: new kakao.maps.LatLng(37.545, 126.99),
     level: 8
   });
-
   map.addControl(new kakao.maps.ZoomControl(), kakao.maps.ControlPosition.RIGHT);
 
   const bounds = new kakao.maps.LatLngBounds();
-
   state.stations.forEach(s => {
     const position = new kakao.maps.LatLng(s.lat, s.lng);
-
     const pin = document.createElement("button");
     pin.type = "button";
     pin.title = s.name;
     pin.addEventListener("click", () => openInfo(s.id));
 
     overlays[s.id] = new kakao.maps.CustomOverlay({
-      position,
-      content: pin,
-      xAnchor: 0.5,
-      yAnchor: 0.5,
-      clickable: true
+      position, content: pin, xAnchor: 0.5, yAnchor: 0.5, clickable: true
     });
-
     bounds.extend(position);
   });
 
-  infoOverlay = new kakao.maps.CustomOverlay({
-    xAnchor: 0.5,
-    yAnchor: 1,
-    clickable: true,
-    zIndex: 10
-  });
-
+  infoOverlay = new kakao.maps.CustomOverlay({ xAnchor: 0.5, yAnchor: 1, clickable: true, zIndex: 10 });
   kakao.maps.event.addListener(map, "click", closeInfo);
 
   map.setBounds(bounds);
@@ -543,11 +552,9 @@ function createMap() {
 
 function updateMapMarkers() {
   if (!map) return;
-
   state.stations.forEach(s => {
     const overlay = overlays[s.id];
     if (!overlay) return;
-
     const pin = overlay.getContent();
     pin.className = `pin ${s.type} ${getStatus(s).className}`;
     pin.textContent = s.machines;
@@ -555,8 +562,6 @@ function updateMapMarkers() {
     const visible = mapFilter === "all" || s.type === mapFilter;
     overlay.setMap(visible ? map : null);
   });
-
-  // 열려 있는 정보창 내용도 최신 재고로 갱신
   if (openInfoId !== null) openInfo(openInfoId);
 }
 
@@ -599,57 +604,53 @@ function renderMapSummary() {
     const list = state.stations.filter(s => s.type === type);
     const machines = list.reduce((sum, s) => sum + s.machines, 0);
     const key = type === "subway" ? "Subway" : "School";
-    $(`sum${key}`).textContent = `${list.length}곳`;
-    $(`sum${key}Machines`).textContent = `대여기 ${machines}대`;
+    if ($(`sum${key}`)) $(`sum${key}`).textContent = `${list.length}곳`;
+    if ($(`sum${key}Machines`)) $(`sum${key}Machines`).textContent = `대여기 ${machines}대`;
   });
 }
 
 function renderMapList() {
   renderMapSummary();
-
   const list = state.stations.filter(s => mapFilter === "all" || s.type === mapFilter);
-
-  $("mapList").innerHTML = list.map(s => {
-    const status = getStatus(s);
-    const isFav = state.favorites.includes(s.id);
-    return `
-      <button class="map-item" data-action="locate" data-id="${s.id}">
-        <i class="pin-sample ${s.type} ${status.className}"></i>
-        <span class="map-item-text">
-          <strong>${isFav ? "★ " : ""}${s.name}</strong>
-          <small>대여기 ${s.machines}대 · ${s.location.split(" · ")[1]}</small>
-        </span>
-        <span class="map-item-count">${s.available}<small>/${s.total}</small></span>
-      </button>
-    `;
-  }).join("");
+  if ($("mapList")) {
+    $("mapList").innerHTML = list.map(s => {
+      const status = getStatus(s);
+      const isFav = state.favorites.includes(s.id);
+      return `
+        <button class="map-item" data-action="locate" data-id="${s.id}">
+          <i class="pin-sample ${s.type} ${status.className}"></i>
+          <span class="map-item-text">
+            <strong>${isFav ? "★ " : ""}${s.name}</strong>
+            <small>대여기 ${s.machines}대 · ${s.location.split(" · ")[1]}</small>
+          </span>
+          <span class="map-item-count">${s.available}<small>/${s.total}</small></span>
+        </button>
+      `;
+    }).join("");
+  }
 }
 
-$("mapTabs").addEventListener("click", event => {
-  const tab = event.target.closest(".tab");
-  if (!tab) return;
-
-  mapFilter = tab.dataset.filter;
-  document.querySelectorAll("#mapTabs .tab").forEach(t =>
-    t.classList.toggle("active", t === tab)
-  );
-
-  const open = openInfoId !== null ? findStation(openInfoId) : null;
-  if (open && mapFilter !== "all" && open.type !== mapFilter) closeInfo();
-
-  renderMapList();
-  updateMapMarkers();
-});
+const mapTabsEl = $("mapTabs");
+if (mapTabsEl) {
+  mapTabsEl.addEventListener("click", event => {
+    const tab = event.target.closest(".tab");
+    if (!tab) return;
+    mapFilter = tab.dataset.filter;
+    document.querySelectorAll("#mapTabs .tab").forEach(t => t.classList.toggle("active", t === tab));
+    const open = openInfoId !== null ? findStation(openInfoId) : null;
+    if (open && mapFilter !== "all" && open.type !== mapFilter) closeInfo();
+    renderMapList();
+    updateMapMarkers();
+  });
+}
 
 function focusOnMap(id) {
   const station = findStation(id);
   if (!map || !station) return;
-
-  // 숨겨진 종류의 장소를 고르면 필터를 전체로 되돌림
   if (mapFilter !== "all" && station.type !== mapFilter) {
-    $("mapTabs").querySelector('[data-filter="all"]').click();
+    const allTab = document.querySelector('#mapTabs [data-filter="all"]');
+    if (allTab) allTab.click();
   }
-
   map.setLevel(4);
   map.panTo(new kakao.maps.LatLng(station.lat, station.lng));
   openInfo(id);
@@ -672,132 +673,125 @@ function locateStation(id) {
   }
 }
 
-// ---------- 공지사항 ----------
+// ---------- 공지사항 및 고객센터 ----------
 
 function renderNotices() {
-  const list = [...state.notices].sort((a, b) =>
-    (b.pinned - a.pinned) || (new Date(b.date) - new Date(a.date))
-  );
-
-  $("noticeCount").textContent = `${list.length}건`;
-
-  $("noticeList").innerHTML = list.length
-    ? list.map(n => `
-        <details class="item ${n.pinned ? "pinned" : ""}">
-          <summary>
-            ${n.pinned ? '<span class="tag">고정</span>' : ""}
-            <span class="item-title">${escapeHTML(n.title)}</span>
-            <span class="item-date">${formatDate(n.date)}</span>
-          </summary>
-          <div class="item-body">
-            <p>${escapeHTML(n.content).replace(/\n/g, "<br>")}</p>
-            <div class="item-actions">
-              <button class="ghost-btn" data-action="pin-notice" data-id="${n.id}">
-                ${n.pinned ? "고정 해제" : "상단 고정"}
-              </button>
-              <button class="ghost-btn danger" data-action="delete-notice" data-id="${n.id}">삭제</button>
+  const list = [...state.notices].sort((a, b) => (b.pinned - a.pinned) || (new Date(b.date) - new Date(a.date)));
+  if ($("noticeCount")) $("noticeCount").textContent = `${list.length}건`;
+  if ($("noticeList")) {
+    $("noticeList").innerHTML = list.length
+      ? list.map(n => `
+          <details class="item ${n.pinned ? "pinned" : ""}">
+            <summary>
+              ${n.pinned ? '<span class="tag">고정</span>' : ""}
+              <span class="item-title">${escapeHTML(n.title)}</span>
+              <span class="item-date">${formatDate(n.date)}</span>
+            </summary>
+            <div class="item-body">
+              <p>${escapeHTML(n.content).replace(/\n/g, "<br>")}</p>
+              <div class="item-actions">
+                <button class="ghost-btn" data-action="pin-notice" data-id="${n.id}">${n.pinned ? "고정 해제" : "상단 고정"}</button>
+                <button class="ghost-btn danger" data-action="delete-notice" data-id="${n.id}">삭제</button>
+              </div>
             </div>
-          </div>
-        </details>
-      `).join("")
-    : '<div class="empty-state">등록된 공지가 없습니다. 왼쪽에서 첫 공지를 작성하세요.</div>';
+          </details>
+        `).join("")
+      : '<div class="empty-state">등록된 공지가 없습니다.</div>';
+  }
 }
 
-$("noticeForm").addEventListener("submit", event => {
-  event.preventDefault();
+const noticeForm = $("noticeForm");
+if (noticeForm) {
+  noticeForm.addEventListener("submit", event => {
+    event.preventDefault();
+    const title = $("noticeTitle").value.trim();
+    const content = $("noticeContent").value.trim();
+    if (!title || !content) return;
 
-  const title = $("noticeTitle").value.trim();
-  const content = $("noticeContent").value.trim();
-  if (!title || !content) return;
-
-  state.notices.push({
-    id: Date.now(),
-    title,
-    content,
-    pinned: $("noticePinned").checked,
-    date: new Date().toISOString()
+    state.notices.push({
+      id: Date.now(),
+      title,
+      content,
+      pinned: $("noticePinned").checked,
+      date: new Date().toISOString()
+    });
+    saveState();
+    noticeForm.reset();
+    renderNotices();
+    showToast("공지를 등록했습니다.");
   });
-
-  saveState();
-  event.target.reset();
-  renderNotices();
-  showToast("공지를 등록했습니다.");
-});
-
-// ---------- 고객센터 ----------
+}
 
 let supportFilter = "all";
 
 function renderInquiries() {
-  const list = state.inquiries
-    .filter(q =>
-      supportFilter === "all" ||
-      (supportFilter === "pending" && !q.answer) ||
-      (supportFilter === "done" && q.answer)
-    )
-    .sort((a, b) => new Date(b.date) - new Date(a.date));
+  const list = state.inquiries.filter(q =>
+    supportFilter === "all" ||
+    (supportFilter === "pending" && !q.answer) ||
+    (supportFilter === "done" && q.answer)
+  ).sort((a, b) => new Date(b.date) - new Date(a.date));
 
-  $("inquiryList").innerHTML = list.length
-    ? list.map(q => `
-        <details class="item">
-          <summary>
-            <span class="tag ${q.answer ? "done" : "pending"}">${q.answer ? "답변 완료" : "답변 대기"}</span>
-            <span class="item-title">${escapeHTML(q.title)}</span>
-            <span class="item-date">${escapeHTML(q.user)} · ${formatDate(q.date)}</span>
-          </summary>
-          <div class="item-body">
-            <p>${escapeHTML(q.content)}</p>
-            ${q.answer
-              ? `<div class="answer"><strong>관리자 답변</strong><p>${escapeHTML(q.answer).replace(/\n/g, "<br>")}</p></div>`
-              : `<textarea id="answer-${q.id}" rows="3" placeholder="답변을 입력하세요."></textarea>
-                 <div class="item-actions">
-                   <button class="solid-btn" data-action="answer" data-id="${q.id}">답변 등록</button>
-                 </div>`
-            }
-          </div>
-        </details>
-      `).join("")
-    : '<div class="empty-state">이 조건에 해당하는 문의가 없습니다.</div>';
-
+  if ($("inquiryList")) {
+    $("inquiryList").innerHTML = list.length
+      ? list.map(q => `
+          <details class="item">
+            <summary>
+              <span class="tag ${q.answer ? "done" : "pending"}">${q.answer ? "답변 완료" : "답변 대기"}</span>
+              <span class="item-title">${escapeHTML(q.title)}</span>
+              <span class="item-date">${escapeHTML(q.user)} · ${formatDate(q.date)}</span>
+            </summary>
+            <div class="item-body">
+              <p>${escapeHTML(q.content)}</p>
+              ${q.answer
+                ? `<div class="answer"><strong>관리자 답변</strong><p>${escapeHTML(q.answer).replace(/\n/g, "<br>")}</p></div>`
+                : `<textarea id="answer-${q.id}" rows="3" placeholder="답변을 입력하세요."></textarea>
+                   <div class="item-actions"><button class="solid-btn" data-action="answer" data-id="${q.id}">답변 등록</button></div>`
+              }
+            </div>
+          </details>
+        `).join("")
+      : '<div class="empty-state">이 조건에 해당하는 문의가 없습니다.</div>';
+  }
   updateSupportBadge();
 }
 
 function updateSupportBadge() {
   const pending = state.inquiries.filter(q => !q.answer).length;
   const badge = $("supportBadge");
-  badge.textContent = pending;
-  badge.hidden = pending === 0;
+  if (badge) {
+    badge.textContent = pending;
+    badge.hidden = pending === 0;
+  }
 }
 
 function answerInquiry(id) {
   const input = $(`answer-${id}`);
   const text = input ? input.value.trim() : "";
-
   if (!text) {
     showToast("답변 내용을 입력하세요.");
     input && input.focus();
     return;
   }
-
   const inquiry = state.inquiries.find(q => q.id === id);
-  inquiry.answer = text;
-
-  saveState();
-  renderInquiries();
-  renderProfileSummary();
-  showToast("답변을 등록했습니다.");
+  if (inquiry) {
+    inquiry.answer = text;
+    saveState();
+    renderInquiries();
+    renderProfileSummary();
+    showToast("답변을 등록했습니다.");
+  }
 }
 
-$("supportTabs").addEventListener("click", event => {
-  const tab = event.target.closest(".tab");
-  if (!tab) return;
-
-  supportFilter = tab.dataset.filter;
-  document.querySelectorAll("#supportTabs .tab").forEach(t =>
-    t.classList.toggle("active", t === tab)
-  );
-  renderInquiries();
-});
+const supportTabs = $("supportTabs");
+if (supportTabs) {
+  supportTabs.addEventListener("click", event => {
+    const tab = event.target.closest(".tab");
+    if (!tab) return;
+    supportFilter = tab.dataset.filter;
+    document.querySelectorAll("#supportTabs .tab").forEach(t => t.classList.toggle("active", t === tab));
+    renderInquiries();
+  });
+}
 
 // ---------- 내정보 ----------
 
@@ -805,56 +799,53 @@ function renderProfileSummary() {
   const p = state.profile;
   const initial = p.name.trim().charAt(0) || "관";
 
-  $("topName").textContent = p.name;
-  $("topAvatar").textContent = initial;
-  $("profileName").textContent = p.name;
-  $("profileAvatar").textContent = initial;
-  $("profileArea").textContent = p.area || "-";
-  $("profileToday").textContent = `${state.history.filter(h => isToday(h.time)).length}건`;
-  $("profilePending").textContent = `${state.inquiries.filter(q => !q.answer).length}건`;
+  if ($("topName")) $("topName").textContent = p.name;
+  if ($("topAvatar")) $("topAvatar").textContent = initial;
+  if ($("profileName")) $("profileName").textContent = p.name;
+  if ($("profileAvatar")) $("profileAvatar").textContent = initial;
+  if ($("profileArea")) $("profileArea").textContent = p.area || "-";
+  if ($("profileToday")) $("profileToday").textContent = `${state.history.filter(h => isToday(h.time)).length}건`;
+  if ($("profilePending")) $("profilePending").textContent = `${state.inquiries.filter(q => !q.answer).length}건`;
 }
 
 function fillProfileForm() {
   const p = state.profile;
-  $("pfName").value = p.name;
-  $("pfEmail").value = p.email;
-  $("pfPhone").value = p.phone;
-  $("pfArea").value = p.area;
-  $("pfAlertLow").checked = p.alertLow;
-  $("pfAlertInquiry").checked = p.alertInquiry;
+  if ($("pfName")) $("pfName").value = p.name;
+  if ($("pfEmail")) $("pfEmail").value = p.email;
+  if ($("pfPhone")) $("pfPhone").value = p.phone;
+  if ($("pfArea")) $("pfArea").value = p.area;
+  if ($("pfAlertLow")) $("pfAlertLow").checked = p.alertLow;
+  if ($("pfAlertInquiry")) $("pfAlertInquiry").checked = p.alertInquiry;
 }
 
-$("profileForm").addEventListener("submit", event => {
-  event.preventDefault();
-
-  state.profile = {
-    name: $("pfName").value.trim() || "관리자",
-    email: $("pfEmail").value.trim(),
-    phone: $("pfPhone").value.trim(),
-    area: $("pfArea").value.trim(),
-    alertLow: $("pfAlertLow").checked,
-    alertInquiry: $("pfAlertInquiry").checked
-  };
-
-  saveState();
-  renderProfileSummary();
-  showToast("계정 정보를 저장했습니다.");
-});
+const profileForm = $("profileForm");
+if (profileForm) {
+  profileForm.addEventListener("submit", event => {
+    event.preventDefault();
+    state.profile = {
+      name: $("pfName").value.trim() || "관리자",
+      email: $("pfEmail").value.trim(),
+      phone: $("pfPhone").value.trim(),
+      area: $("pfArea").value.trim(),
+      alertLow: $("pfAlertLow").checked,
+      alertInquiry: $("pfAlertInquiry").checked
+    };
+    saveState();
+    renderProfileSummary();
+    showToast("계정 정보를 저장했습니다.");
+  });
+}
 
 function resetData() {
   if (!confirm("모든 변경 내용을 지우고 예시 데이터로 되돌릴까요?")) return;
-
-  try {
-    localStorage.removeItem(STORAGE_KEY);
-  } catch (e) { /* 무시 */ }
-
+  try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
   state = createDefaultState();
   refreshAll();
   fillProfileForm();
   showToast("예시 데이터로 초기화했습니다.");
 }
 
-// ---------- 버튼 클릭 (한 곳에서 처리) ----------
+// ---------- 이벤트 위 délégation ----------
 
 document.addEventListener("click", event => {
   const button = event.target.closest("[data-action]");
@@ -871,9 +862,11 @@ document.addEventListener("click", event => {
 
     case "pin-notice": {
       const notice = state.notices.find(n => n.id === id);
-      notice.pinned = !notice.pinned;
-      saveState();
-      renderNotices();
+      if (notice) {
+        notice.pinned = !notice.pinned;
+        saveState();
+        renderNotices();
+      }
       break;
     }
 
@@ -889,14 +882,43 @@ document.addEventListener("click", event => {
   }
 });
 
-// ---------- 검색 / 필터 ----------
+// ---------- 모달 및 QR 관련 이벤트 리스너 ----------
 
-$("searchInput").addEventListener("input", renderStations);
-$("statusFilter").addEventListener("change", renderStations);
-$("typeFilter").addEventListener("change", renderStations);
-$("historySearch").addEventListener("input", renderHistory);
-$("historyType").addEventListener("change", renderHistory);
-$("historyPeriod").addEventListener("change", renderHistory);
+if ($("closeQrModal")) $("closeQrModal").addEventListener("click", closeQrModal);
+if ($("closePayModal")) $("closePayModal").addEventListener("click", closePayModal);
+if ($("cancelPayBtn")) $("cancelPayBtn").addEventListener("click", closePayModal);
+
+if ($("simScanBtn")) {
+  $("simScanBtn").addEventListener("click", () => {
+    if (currentTargetStation) openPayModal(currentTargetStation);
+  });
+}
+
+if ($("completePayBtn")) {
+  $("completePayBtn").addEventListener("click", processPayment);
+}
+
+function checkQrUrlHash() {
+  const hash = window.location.hash;
+  if (hash.startsWith("#pay?stationId=")) {
+    const stationId = Number(hash.split("=")[1]);
+    const station = findStation(stationId);
+    if (station) {
+      history.replaceState(null, "", window.location.pathname + "#home");
+      showPage();
+      openPayModal(station);
+    }
+  }
+}
+
+// ---------- 검색 및 필터 이벤트 ----------
+
+if ($("searchInput")) $("searchInput").addEventListener("input", renderStations);
+if ($("statusFilter")) $("statusFilter").addEventListener("change", renderStations);
+if ($("typeFilter")) $("typeFilter").addEventListener("change", renderStations);
+if ($("historySearch")) $("historySearch").addEventListener("input", renderHistory);
+if ($("historyType")) $("historyType").addEventListener("change", renderHistory);
+if ($("historyPeriod")) $("historyPeriod").addEventListener("change", renderHistory);
 
 // ---------- 전체 새로고침 ----------
 
@@ -913,93 +935,51 @@ function refreshAll() {
   renderProfileSummary();
 }
 
-// ---------- 시작 ----------
+// ---------- 앱 초기화 ----------
 
-window.addEventListener("hashchange", showPage);
+window.addEventListener("hashchange", () => {
+  checkQrUrlHash();
+  showPage();
+});
+
 refreshAll();
+checkQrUrlHash();
 showPage();
+// ---------- 모달 닫기 및 버튼 이벤트 확실하게 연결 ----------
 
+function closeQrModal() {
+  const qrModal = document.getElementById("qrModal");
+  if (qrModal) qrModal.hidden = true;
+}
 
-// =====================================
-// 랜딩 페이지: 빗방울 + 스크롤하면 비가 그치는 효과
-// 빗줄기 양은 아래 RAIN_COUNT 숫자로 조절
-// =====================================
-(function () {
-  // ----- 빗방울 생성 -----
-  var RAIN_COUNT = 120;   // 빗줄기 양
-  var SPLASH_COUNT = 22;  // 바닥 물방울 수
-  var rain = document.querySelector('.dr-rain');
-  var splashes = document.querySelector('.dr-splashes');
-  var seed = 11;
-  function rnd() { seed = (seed * 9301 + 49297) % 233280; return seed / 233280; }
-  var html = '';
-  for (var i = 0; i < RAIN_COUNT; i++) {
-    html += '<i style="left:' + (rnd() * 100).toFixed(2) + '%;width:' + (rnd() < 0.3 ? 2 : 1) +
-      'px;height:' + Math.round(50 + rnd() * 60) + 'px;opacity:' + (0.3 + rnd() * 0.5).toFixed(2) +
-      ';animation-duration:' + (0.45 + rnd() * 0.5).toFixed(2) + 's;animation-delay:-' + (rnd() * 2).toFixed(2) + 's"></i>';
+function closePayModal() {
+  const payModal = document.getElementById("payModal");
+  if (payModal) payModal.hidden = true;
+}
+
+// 닫기(×) 버튼과 취소 버튼에 이벤트 연결
+document.addEventListener("DOMContentLoaded", () => {
+  const closeQrBtn = document.getElementById("closeQrModal");
+  const closePayBtn = document.getElementById("closePayModal");
+  const cancelPayBtn = document.getElementById("cancelPayBtn");
+
+  if (closeQrBtn) closeQrBtn.addEventListener("click", closeQrModal);
+  if (closePayBtn) closePayBtn.addEventListener("click", closePayModal);
+  if (cancelPayBtn) cancelPayBtn.addEventListener("click", closePayModal);
+
+  // 모달 바깥 배경(어두운 부분)을 눌러도 닫히게 설정
+  const qrModal = document.getElementById("qrModal");
+  const payModal = document.getElementById("payModal");
+
+  if (qrModal) {
+    qrModal.addEventListener("click", (e) => {
+      if (e.target === qrModal) closeQrModal();
+    });
   }
-  rain.innerHTML = html;
-  html = '';
-  for (var j = 0; j < SPLASH_COUNT; j++) {
-    html += '<i style="left:' + (3 + rnd() * 94).toFixed(1) + '%;bottom:' + (rnd() * 70).toFixed(1) +
-      '%;animation-delay:-' + (rnd() * 1.1).toFixed(2) + 's"></i>';
-  }
-  splashes.innerHTML = html;
 
-  // ----- 스크롤에 따라 비 → 맑음 -----
-  var hero = document.querySelector('.dr-hero');
-  var stage = document.querySelector('.dr-stage');
-  var el = {
-    sun: document.querySelector('.dr-sun'),
-    clouds: document.querySelector('.dr-clouds'),
-    intro: document.querySelector('.dr-intro'),
-    product: document.querySelector('.dr-product'),
-    copy: document.querySelector('.dr-copy'),
-    hint: document.querySelector('.dr-hint'),
-    logoW: document.querySelector('.dr-logo .white'),
-    logoN: document.querySelector('.dr-logo .navy'),
-    links: document.querySelectorAll('.dr-links a')
-  };
-  function c(x) { return Math.min(1, Math.max(0, x)); }
-  function mix(a, b, t) {
-    return 'rgb(' + Math.round(a[0] + (b[0] - a[0]) * t) + ',' +
-      Math.round(a[1] + (b[1] - a[1]) * t) + ',' + Math.round(a[2] + (b[2] - a[2]) * t) + ')';
+  if (payModal) {
+    payModal.addEventListener("click", (e) => {
+      if (e.target === payModal) closePayModal();
+    });
   }
-  var ticking = false;
-  function update() {
-    ticking = false;
-    var r = hero.getBoundingClientRect();
-    var total = r.height - window.innerHeight;
-    var p = total > 0 ? c(-r.top / total) : 0;
-
-    var sky = c((p - 0.25) / 0.45);
-    var q = c((p - 0.18) / 0.42);
-    var ease = 1 - Math.pow(1 - q, 3);
-    var txt = c((p - 0.55) / 0.25);
-    var rainOp = 1 - c((p - 0.3) / 0.35);
-
-    var bg = mix([24, 32, 47], [234, 243, 251], sky);
-    hero.style.background = bg;
-    stage.style.background = bg;
-    el.sun.style.opacity = sky;
-    el.clouds.style.opacity = 1 - c((p - 0.25) / 0.4);
-    el.clouds.style.transform = 'translateY(' + (-p * 320) + 'px)';
-    rain.style.opacity = rainOp;
-    splashes.style.opacity = rainOp;
-    el.intro.style.opacity = 1 - c((p - 0.1) / 0.18);
-    el.intro.style.transform = 'translateY(' + (-p * 160) + 'px)';
-    el.product.style.opacity = c(q * 1.6);
-    el.product.style.transform = 'translateY(' + ((1 - ease) * 720) + 'px) scale(' + (0.9 + ease * 0.1) + ')';
-    el.copy.style.opacity = txt;
-    el.copy.style.transform = 'translateY(' + ((1 - txt) * 32) + 'px)';
-    el.hint.style.opacity = 1 - c(p / 0.08);
-    el.logoW.style.opacity = 1 - sky;
-    el.logoN.style.opacity = sky;
-    var navColor = mix([230, 238, 250], [13, 36, 84], sky);
-    for (var k = 0; k < el.links.length; k++) el.links[k].style.color = navColor;
-  }
-  function onScroll() { if (!ticking) { ticking = true; requestAnimationFrame(update); } }
-  window.addEventListener('scroll', onScroll, { passive: true });
-  window.addEventListener('resize', onScroll);
-  update();
-})();
+});
